@@ -1,0 +1,181 @@
+<!doctype html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <title>practica ajax datatables</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../bower_components/datatables/media/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="../bower_components/growl/stylesheets/jquery.growl.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!--  <link rel="stylesheet" href="styles/jquery-ui.css">
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+    <!-- endbuild -->
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="page-header">
+            <!-- data-target la relación con el div modal que abre o cierra  -->
+            <!-- data-backdrop a static para que no se pueda hacer nada fuera de la pantalla que aparece... manias ...  -->
+            <button id="boton-crear-marcador" data-target="#modal-crear" class="btn btn-success" data-toggle="modal" data-backdrop="static">Nuevo Marcador</button>
+        </div>
+        <div id="tabla" class="row">
+            <div class="col-md-12">
+                <table id="miTabla" class="table">
+                    <thead>
+                        <th>urlMarcador</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <th>urlMarcador</th>
+                        <th>Editar</th>
+                        <th>Borrar</th>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <body>
+            <!-- http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-modals.php -->
+            <!-- Modal CREAR HTML -->
+            <div id="modal-crear" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Datos del Marcador</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" novalidate id="crearMarcador">
+                                <div class="form-group">
+                                    <label for="urlCrear" class="col-sm-4 control-label">URL:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="urlMarcadorCrear" id="urlMarcadorCrear" placeholder="URL del nuevo Marcador">
+                                    </div>
+                                </div>
+                            <!--     <div class="form-group">
+                                    <label for="numeroColegiadoCrear" class="col-sm-4 control-label">Nº de Colegiado:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="numeroColegiadoCrear" id="numeroColegiadoCrear" placeholder="Número de colegiado del nuevo Marcador">
+                                    </div>
+                                </div> -->
+                               <!--  <div class="form-group">
+                                    <label for="clinicasCrear" class="col-sm-4 control-label">Clinicas:</label>
+                                    <div class="col-sm-8">
+                                        <select name="seleccionaClinicasCrear[]" id="seleccionaClinicasCrear" multiple class="form-control ">
+                                        </select>
+                                    </div>
+                                </div> -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <!-- <button id="botonGuardarCrearMarcador" type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+                            <input type="submit" id="botonGuardarCrearMarcador" value="Guardar" data-toggle="modal" class="btn btn-primary" />
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal EDITAR HTML -->
+            <div id="modal-editar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Datos del Marcador</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" novalidate id="editarMarcador">
+                                <div class="form-group">
+                                    <label for="nombreEditar" class="col-sm-4 control-label">Nombre:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="nombreEditar" id="nombreEditar">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numeroColegiadoEditar" class="col-sm-4 control-label">Nº de Colegiado:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="numeroColegiadoEditar" id="numeroColegiadoEditar">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="clinicasEditar" class="col-sm-4 control-label">Clinicas:</label>
+                                    <div class="col-sm-8">
+                                        <select name="seleccionaClinicasEditar[]" id="seleccionaClinicasEditar" multiple class="form-control ">
+                                        </select>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" name="idMarcadorEditar" id="idMarcadorEditar">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="botonCancelarEditarMarcador" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <!--   <button id="botonGuardarEditarMarcador" type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button> -->
+                            <input type="submit" id="botonGuardarEditarMarcador" value="Guardar" data-toggle="modal" class="btn btn-primary" />
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal BORRAR HTML -->
+            <div id="modal-borrar" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Borrar Marcador</h4>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="nombreBorrar" class="col-sm-4 control-label">Nombre:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" readonly id="nombreBorrar">
+                            </div>
+                        </div>-->
+                        <div class="modal-body">
+                            <p>¿Seguro que quieres borrar el Marcador? </p>
+                        </div>
+                        <input type="hidden" class="form-control" name="idMarcadorBorrar" id="idMarcadorBorrar">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button id="botonBorrarBorrarMarcador" type="button" class="btn btn-primary" data-dismiss="modal">Borrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap">
+                <a href="https://github.com/pelos6/practica-ajax-datatables" class="boton color2">Ver en GitHub</a>
+                <h1 id="circular">javier iranzo burriel</h1>
+            </div>
+            <!--     -->
+            <!-- build:js(.) scripts/vendor.js -->
+            <!-- bower:js -->
+            <script src="../bower_components/jquery/dist/jquery.js"></script>
+            <script src="../bower_components/datatables/media/js/jquery.dataTables.js"></script>
+            <script src="../bower_components/growl/javascripts/jquery.growl.js"></script>
+            <script src="../bower_components/jquery-validate/dist/jquery.validate.js"></script>
+            <!-- endbower -->
+            <!-- endbuild -->
+            <!-- build:js(.) scripts/plugins.js -->
+            <!-- endbuild -->
+            <!-- build:js({app,.tmp}) scripts/mainMarcadores.js -->
+            <!--<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+            <script src="scripts/jquery-ui.js"></script>-->
+            <script src="scripts/mainMarcadores.js"></script>
+            <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
+            <script src="scripts/bootstrap.min.js"></script>
+            <!-- endbuild -->
+        </body>
+
+</html>
