@@ -7,13 +7,13 @@
 -- Versión del servidor: 5.5.28
 -- Versión de PHP: 5.3.10-1ubuntu3.4
 
-CREATE DATABASE marcadores;
+CREATE DATABASE marcadoresImportados;
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
-USE  marcadores;
+USE  marcadoresImportados;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -21,16 +21,16 @@ USE  marcadores;
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `marcadores`
+-- Base de datos: `marcadoresImportados`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `marcadores`
+-- Estructura de tabla para la tabla `marcadoresImportados`
 --
 
-CREATE TABLE IF NOT EXISTS `marcadores` (
+CREATE TABLE IF NOT EXISTS `marcadoresImportados` (
   `idMarcador` int(10) NOT NULL AUTO_INCREMENT,
    `urlMarcador` varchar(400) NOT NULL,
   `conceptoMarcador` varchar(400) NOT NULL,
@@ -38,11 +38,10 @@ CREATE TABLE IF NOT EXISTS `marcadores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `marcadores`
+-- Volcado de datos para la tabla `marcadoresImportados`
 --
 
-INSERT INTO `marcadores` (`urlMarcador`,`conceptoMarcador`) VALUES
-('http://frontendlabs.io/985--paquetes-de-sublime-text-para-acelerar-tu-trabajo', 'front end laboratios'),
+INSERT INTO `marcadoresImportados` (`urlMarcador`,`conceptoMarcador`) VALUES
 ('http://zaragozaciudad.net/azlinux/', 'Zaragoza Linux');
 
 
