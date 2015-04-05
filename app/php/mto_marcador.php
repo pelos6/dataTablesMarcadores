@@ -39,7 +39,6 @@ switch ($accion) {
          /* Easy set variables
          */
         // DB table to use
-//        $table = 'vdoctoresclinicas';
          $table = 'vMarcadoresImportados';      
         // Table's primary key
         $primaryKey = 'idMarcador';       
@@ -55,6 +54,10 @@ switch ($accion) {
             array(
                 'db' => 'hrefMarcador',
                 'dt' => 'hrefMarcador'
+            ),
+            array(
+                'db' => 'urlMarcador',
+                'dt' => 'urlMarcador'
             ),
             array(
                 'db' => 'conceptoMarcador',
@@ -82,9 +85,10 @@ switch ($accion) {
     // Creando el Marcador y las clinicas asociadas
     case 'crearMarcador':
         $urlMarcador          = filter_input(INPUT_POST, "urlMarcador", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
+        $conceptoMarcador          = filter_input(INPUT_POST, "conceptoMarcador", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
         // en la select meto el auto incremental para idMarcador
-        $query = "INSERT INTO marcadores (idMarcador, urlMarcador) ";
-        $query = $query . "select max(idMarcador) + 1 , '" . $urlMarcador . "' from marcadores ";
+        $query = "INSERT INTO marcadoresImportados (idMarcador, urlMarcador, conceptoMarcador) ";
+        $query = $query . "select max(idMarcador) + 1 , '" . $urlMarcador . "' , '" . $conceptoMarcador . "' from marcadoresImportados ";
         error_log("DEBUG: la query primera " . $query);
         
         /*En función del resultado correcto o no, mostraremos el mensaje que corresponda*/
@@ -102,12 +106,11 @@ switch ($accion) {
      
         break;
     case 'editarMarcador':
-        $nombre          = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
-        $numeroColegiado = filter_input(INPUT_POST, "numeroColegiado", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
-        $clinicas        = $_POST['clinicas'];
+        $urlMarcador          = filter_input(INPUT_POST, "urlMarcador", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
+        $conceptoMarcador = filter_input(INPUT_POST, "conceptoMarcador", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
         $idMarcador = filter_input(INPUT_POST, "idMarcador", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
         /* Consulta UPDATE */
-        $query = "UPDATE doctores SET nombre = '" . $nombre . "', numcolegiado = '" . $numeroColegiado . "'  WHERE id_doctor = '" . $idMarcador . "' ";
+        $query = "UPDATE marcadoresImportados SET urlMarcador = '" . $urlMarcador . "', conceptoMarcador = '" . $conceptoMarcador . "'  WHERE idMarcador = '" . $idMarcador . "' ";
         error_log("DEBUG: la query de update " . $query);
         
         /*En función del resultado correcto o no, mostraremos el mensaje que corresponda*/
@@ -122,40 +125,11 @@ switch ($accion) {
             $mensaje = "Actualización correcta";
             $estado  = 0;
         }
-        /*********/
-        /* Primero borramos las clinicas que tenia el doctor ....
-        Consulta DELETE primero de las clinicas del doctor*/
-        $query = "DELETE FROM clinica_doctor WHERE id_doctor = '" . $idMarcador . "' ";
-        error_log("DEBUG: la query de delete pre insert en clinicas  " . $query);
-        /*En función del resultado correcto o no, mostraremos el mensaje que corresponda*/
-        $query_res = mysql_query($query);
-        // Comprobar el resultado
-        if (!$query_res) {
-            $mensaje = 'Error en la consulta 1 de borrado de clinicas de doctor antes del insert: ' . mysql_error() . "\n";
-            error_log("El ERROR de la consulta 1 borrado de clinicas de doctor antes del insert" . $mensaje);
-            $estado = mysql_errno();
-        } else {
-            /* ahora insertamos las clinicar que vienen nuevas ... mas simple que mirar que clinica esta o deja de estar  ;)*/
-            /*Es necesario meter también la o las clinicas (al menos una por restricción)*/
-            foreach ($clinicas as $key => $value) {
-                $query = "INSERT INTO clinica_doctor ( id_doctor , numdoctor ,id_clinica ) ";
-                $query = $query . " values (" . $idMarcador . " , " . $numeroColegiado . " , " . $value . " )";
-                error_log("DEBUG: la query de la clinica insertada editar " . $query);
-                $query_res = mysql_query($query);
-                if (!$query_res) {
-                    $mensaje = 'Error en la consulta: ' . mysql_error() . "\n";
-                    $estado  = mysql_errno();
-                } else {
-                    $estado  = 0;
-                    $mensaje = 'Clinica-Marcador insertada correctamente';
-                }
-            }
-        }
         break;
     case 'borrarMarcador':
         $idMarcador = filter_input(INPUT_POST, "idMarcador", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
         /* Consulta DELETE marcador*/
-        $query = "DELETE FROM marcadores WHERE idMarcador = '" . $idMarcador . "' ";
+        $query = "DELETE FROM marcadoresImportados WHERE idMarcador = '" . $idMarcador . "' ";
         error_log("DEBUG: la query de delete 1 " . $query);
         /*En función del resultado correcto o no, mostraremos el mensaje que corresponda*/
         $query_res = mysql_query($query);
@@ -165,56 +139,8 @@ switch ($accion) {
             error_log("El ERROR de la consulta 1 " . $mensaje);
             $estado = mysql_errno();
         } else {
-             $mensaje = "Borrado correcto de las clinicas del doctor";
+             $mensaje = "Borrado correcto del marcador ";
             $estado = 0;
-        }
-        break;
-    case 'cargarClinicas':
-        /* Consulta SELECT para cargar las clinicas a seleccionar*/
-        $query = "SELECT id_clinica, nombre FROM clinicas";
-        error_log("DEBUG: la query de la carga de las clinicas " . $query);
-        /*En función del resultado correcto o no, mostraremos el mensaje que corresponda*/
-        $query_res = mysql_query($query);
-        // Comprobar el resultado
-        if (!$query_res) {
-            $mensaje = 'Error en la consulta : ' . mysql_error() . "\n";
-            error_log("El ERROR de la consulta " . $mensaje);
-            $estado = mysql_errno();
-        } else {
-            while ($fila = mysql_fetch_assoc($query_res)) {
-                echo '<option id="' . $fila['id_clinica'] . '" value="' . $fila['id_clinica'] . '" >' . $fila['nombre'] . '</option>';
-            }
-            $mensaje = "Carga correcta de las clinicas a seleccionar";
-            $estado  = 0;
-        }
-        break;
-    case 'cargarClinicasMarcador':
-        $idMarcador = filter_input(INPUT_POST, "idMarcador", FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_AMP);
-        /* Consulta SELECT para cargar las clinicas a seleccionar*/
-        $query = "SELECT id_clinica, nombre FROM clinicas";
-        error_log("DEBUG: la query de la carga de las clinicas para cada doctor " . $query);
-        /*En función del resultado correcto o no, mostraremos el mensaje que corresponda*/
-        $query_res = mysql_query($query);
-        // Comprobar el resultado
-        if (!$query_res) {
-            $mensaje = 'Error en la consulta : ' . mysql_error() . "\n";
-            error_log("El ERROR de la consulta " . $mensaje);
-            $estado = mysql_errno();
-        } else {
-            while ($fila = mysql_fetch_assoc($query_res)) {
-                /* la query para ver si el doctor tiene esa clinica */
-                $query = "SELECT count(*) FROM clinica_doctor cd where cd.id_doctor = '" . $idMarcador . "'  and cd.id_clinica = '" . $fila['id_clinica'] . "' ";
-                error_log("DEBUG: la query de la  de comprobación  clinicas " . $query);
-                $query_res1 = mysql_query($query);
-                error_log ("DEBUG: ".mysql_result($query_res1,0));
-                if (mysql_result($query_res1,0) == 0 ){
-                    echo '<option id="' . $fila['id_clinica'] . '" value="' . $fila['id_clinica'] . '" >' . $fila['nombre'] . '</option>';
-                } else {
-                    echo '<option id="' . $fila['id_clinica'] . '" value="' . $fila['id_clinica'] . ' "  selected >' . $fila['nombre'] . '</option>';
-                }
-            }
-            $mensaje = "Carga correcta de las clinicas a seleccionar";
-            $estado  = 0;
         }
         break;
 }

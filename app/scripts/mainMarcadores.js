@@ -1,197 +1,197 @@
 console.log('\'Allo \'Allo! marcadores!!!');
 'use strict';
-// saco este metodo de additional.methods para no tener que cargar el archivo completo
-// lo modifico para que admita espacios en blanco, acentos y la ñ
-jQuery.validator.addMethod("validaNombre", function(value, element) {
-    return this.optional(element) || /^[a-z ñáéíóú]+$/i.test(value);
-}, "Letters only please");
-// Las validaciones del formulario crearMarcador
-var validatorCrear = $('#crearMarcador').validate({
-    rules: {
-        urlMarcadorCrear: {
-            required: true,
-            minlength: 10,
-            maxlength: 200
-        }
-    },
-    // unos cuantos mensajes personalizados
-    messages: {
-        urlMarcadorCrear: {
-            required: "Para crear un marcador es necesario una URL"
-                /*,
-                            digits: "El numero de colegiado solo puede tener numeros",
-                            minlength: "El número de colegiado debe tener al menos {0} digitos", // {0} es el valor del primer parametro 
-                            maxlength: "El número de colegiado debe tener como mucho {0} digitos"*/
-        }
-    },
-    submitHandler: function(form) {
-        console.log("en el boton  submitHandler botonConfirmarCrearMarcador");
-        //  mievento.preventDefault();
-        // no es necesario el idmarcador pues lo genera el programa con un secuencial
-        // var idmarcador = $("#idmarcadorEditar").val();
-        var urlMarcadorCrear = $("#urlMarcadorCrear").val();
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            // un unico php para todas las acciones
-            url: "php/mto_marcador.php",
-            async: false,
-            //estos son los datos que queremos usar, en json:
-            data: {
-                accion: 'crearMarcador', // la acción que ejecuto el php es un parámetro más
-                //clinicas: clinicas,
-                urlMarcador: urlMarcadorCrear
-            },
-            error: function(xhr, status, error) {
-                //el error se muestra con growl
-                $.growl.error({
-                    message: "Error al crear un marcador!" + error
-                });
-            },
-            success: function(data) {
-                //obtenemos el mensaje del servidor, es un array!!!
-                //var mensaje = (data["mensaje"]) //o data[0], en función del tipo de array!!
-                var $mitabla = $("#miTabla").dataTable({
-                    bRetrieve: true
-                });
-                //actualizamos datatables:
-                $mitabla.fnDraw();
-                $.growl({
-                    title: "Exito!",
-                    // colocando el mensaje centrado arriba ... manias ...
-                    location: "tc",
-                    size: "large",
-                    style: "warning",
-                    message: "El marcador ha sido creado con exito"
-                });
-                $('#modal-crear').modal('hide');
-            },
-            complete: {
-                //si queremos hacer algo al terminar la petición ajax
 
-            }
-        });
+jQuery.validator.addMethod("urlLocalhost", function(value, element) {
+    console.log("en el metodo " + value);
+    if (value.indexOf('localhost') != -1) {
+        return true;
+    } else {
+        // contributed by Scott Gonzalez: http://projects.scottsplayground.com/iri/
+        return this.optional(element) || /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     }
-});
+}, "Debes introducir una url o al menos algo que lo parezca o localhost");
 
-// Las validaciones del formulario editarmarcador
-// atención que van con name y no con id
-var validatorEditar = $('#editarmarcador').validate({
-    rules: {
-        nombreEditar: {
-            required: true,
-            minlength: 2,
-            validaNombre: true, // modificado para que admita ñ, acentos, espacios ...
-            maxlength: 100
-        },
-        numeroColegiadoEditar: {
-            required: true,
-            digits: true, // solo numeros pero no cifras (-12) no es válido
-            minlength: 4,
-            maxlength: 7
-        },
-        'seleccionaClinicasEditar[]': {
-            required: true,
-            minlength: 1
-        }
-    },
-    // unos cuantos mensajes personalizados
-    messages: {
-        numeroColegiadoEditar: {
-            required: "Para modificar un marcador es necesario un numero de colegiado",
-            digits: "El numero de colegiado solo puede tener numeros",
-            minlength: "El número de colegiado debe tener al menos {0} digitos", // {0} es el valor del primer parametro 
-            maxlength: "El número de colegiado debe tener como mucho {0} digitos"
-        },
-        nombreEditar: {
-            required: "Para editar un marcador es necesario un nombre de marcador",
-            minlength: "El nombre del marcador debe tener al menos {0} caracteres", // {0} es el valor del primer parametro
-            maxlength: "El nombre del marcador no puede tener mas de {0} caracteres",
-            validaNombre: "El nombre del marcador solo puede contener letras"
-        },
-        'seleccionaClinicasEditar[]': {
-            required: "Cada marcador editado tiene que tener alguna clínica asignada",
-            minlength: "El marcador editado debe tener al menos {0} clinica asignada",
-        }
-    },
-    submitHandler: function(form) {
-        console.log("en el boton  submitHandler botonConfirmarEditarmarcador");
-        //  mievento.preventDefault();
-        var idmarcador = $("#idmarcadorEditar").val();
-        var clinicas = $("#seleccionaClinicasEditar").val();
-        var nombre = $("#nombreEditar").val();
-        var numeroColegiado = $("#numeroColegiadoEditar").val();
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            // un unico php para todas las acciones
-            url: "php/mto_marcador.php",
-            async: false,
-            //estos son los datos que queremos usar, en json:
-            data: {
-                accion: 'editarMarcador', // la acción que ejecuto el php es un parámetro más
-                idmarcador: idmarcador,
-                clinicas: clinicas,
-                nombre: nombre,
-                numeroColegiado: numeroColegiado
-            },
-            error: function(xhr, status, error) {
-                //el error se muestra con growl
-                $.growl.error({
-                    message: "Error al editar un marcador!" + error
-                });
-            },
-            success: function(data) {
-                //obtenemos el mensaje del servidor, es un array!!!
-                //var mensaje = (data["mensaje"]) //o data[0], en función del tipo de array!!
-                var $mitabla = $("#miTabla").dataTable({
-                    bRetrieve: true
-                });
-                //actualizamos datatables:
-                $mitabla.fnDraw();
-                $.growl({
-                    title: "Exito!",
-                    // colocando el mensaje centrado arriba ... manias ...
-                    location: "tc",
-                    size: "large",
-                    style: "warning",
-                    message: "El marcador ha sido editado con exito"
-                });
-                $('#modal-editar').modal('hide');
-            },
-            complete: {
-                //si queremos hacer algo al terminar la petición ajax
-
-            }
-        });
-    }
-});
-
-/* Limpiamos los formularios de crear y editar */
-$('#modal-crear').on('hidden.bs.modal', function() {
-    validatorCrear.resetForm();
-})
-$('#modal-editar').on('hidden.bs.modal', function() {
-    validatorEditar.resetForm();
-});
-/* mas limpio con el código anterior ...
-$("#botonCancelarEditarmarcador").click(function() {
-    validatorEditar.resetForm();
-});
-$("#botonCancelarCrearmarcador").click(function() {
-    validatorCrear.resetForm();
-});
-$(".close").click(function() {
-    validatorEditar.resetForm();
-    validatorCrear.resetForm();
-});
-*/
 $(document).ready(function() {
-    // Setup - add a text input to each footer cell
-   /* $('#miTabla tfoot th').each(function() {
-        var title = $('#miTabla thead th').eq($(this).index()).text();
-        $(this).html('<input type="text" placeholder="Buscar en ' + title + '" />');
-    });*/
+    // Las validaciones del formulario crearMarcador
+    var validatorCrear = $('#crearMarcador').validate({
+        rules: {
+            conceptoMarcadorCrear: {
+                required: true,
+                minlength: 2,
+                maxlength: 400
+            },
+            urlMarcadorCrear: {
+                required: true,
+                minlength: 10,
+                maxlength: 400,
+                urlLocalhost: true
+                    //  url: true -- pero no admite localhost
+            }
+        },
+        // unos cuantos mensajes personalizados
+        messages: {
+            conceptoMarcadorCrear: {
+                required: "Para crear un marcador es necesario algo que explique su concepto",
+                minlength: "El concepto del marcador debe tener al menos {0} digitos", // {0} es el valor del primer parametro 
+                maxlength: "El concepto del marcador debe tener como mucho {0} digitos"
+            },
+            urlMarcadorCrear: {
+                required: "Para crear un marcador es necesario una URL",
+                minlength: "La URL del marcador debe tener al menos {0} digitos", // {0} es el valor del primer parametro 
+                maxlength: "La URL del marcador debe tener como mucho {0} digitos"
+            }
+        },
+        submitHandler: function(form) {
+            console.log("en el boton  submitHandler botonConfirmarCrearMarcador");
+            //  mievento.preventDefault();
+            // no es necesario el idmarcador pues lo genera el programa con un secuencial
+            // var idmarcador = $("#idmarcadorEditar").val();
+            var urlMarcadorCrear = $("#urlMarcadorCrear").val();
+            var conceptoMarcadorCrear = $("#conceptoMarcadorCrear").val();
+            console.log("la url a insertar " + urlMarcadorCrear);
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // un unico php para todas las acciones
+                url: "php/mto_marcador.php",
+                async: false,
+                //estos son los datos que queremos usar, en json:
+                data: {
+                    accion: 'crearMarcador', // la acción que ejecuto el php es un parámetro más
+                    urlMarcador: urlMarcadorCrear,
+                    conceptoMarcador: conceptoMarcadorCrear
+                },
+                error: function(xhr, status, error) {
+                    //el error se muestra con growl
+                    $.growl.error({
+                        message: "Error al crear un marcador!" + error
+                    });
+                },
+                success: function(data) {
+                    //obtenemos el mensaje del servidor, es un array!!!
+                    //var mensaje = (data["mensaje"]) //o data[0], en función del tipo de array!!
+                    var $mitabla = $("#miTabla").dataTable({
+                        bRetrieve: true
+                    });
+                    //actualizamos datatables:
+                    $mitabla.fnDraw();
+                    $.growl({
+                        title: "Exito!",
+                        // colocando el mensaje centrado arriba ... manias ...
+                        location: "tc",
+                        size: "large",
+                        style: "warning",
+                        message: "El marcador ha sido creado con exito"
+                    });
+                    $('#modal-crear').modal('hide');
+                },
+                complete: {
+                    //si queremos hacer algo al terminar la petición ajax
+
+                }
+            });
+        }
+    });
+    // Las validaciones del formulario editarmarcador
+    // atención que van con name y no con id
+    var validatorEditar = $('#editarMarcador').validate({
+        rules: {
+            urlMarcadorEditar: {
+                required: true,
+                minlength: 10,
+                maxlength: 400,
+                urlLocalhost: true
+                    //  url: true -- pero no admite localhost
+            },
+            conceptoMarcadorEditar: {
+                required: true,
+                minlength: 2,
+                maxlength: 400
+            }
+        },
+              // unos cuantos mensajes personalizados
+        messages: {
+            conceptoMarcadorEditar: {
+                required: "Para editra un marcador es necesario algo que explique su concepto",
+                minlength: "El concepto del marcador debe tener al menos {0} digitos", // {0} es el valor del primer parametro 
+                maxlength: "El concepto del marcador debe tener como mucho {0} digitos"
+            },
+            urlMarcadorEditar: {
+                required: "Para editar un marcador es necesario una URL",
+                minlength: "La URL del marcador debe tener al menos {0} digitos", // {0} es el valor del primer parametro 
+                maxlength: "La URL del marcador debe tener como mucho {0} digitos"
+            }
+        },
+        submitHandler: function(form) {
+            console.log("en el boton  submitHandler botonConfirmarEditarmarcador");
+            //  mievento.preventDefault();
+            var idMarcador = $("#idMarcadorEditar").val();
+            var urlMarcador = $("#urlMarcadorEditar").val();
+            var conceptoMarcador = $("#conceptoMarcadorEditar").val();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                // un unico php para todas las acciones
+                url: "php/mto_marcador.php",
+                async: false,
+                //estos son los datos que queremos usar, en json:
+                data: {
+                    accion: 'editarMarcador', // la acción que ejecuto el php es un parámetro más
+                    idMarcador: idMarcador,
+                    urlMarcador: urlMarcador,
+                    conceptoMarcador: conceptoMarcador
+                },
+                error: function(xhr, status, error) {
+                    //el error se muestra con growl
+                    $.growl.error({
+                        message: "Error al editar un marcador!" + error
+                    });
+                },
+                success: function(data) {
+                    //obtenemos el mensaje del servidor, es un array!!!
+                    //var mensaje = (data["mensaje"]) //o data[0], en función del tipo de array!!
+                    var $mitabla = $("#miTabla").dataTable({
+                        bRetrieve: true
+                    });
+                    //actualizamos datatables:
+                    $mitabla.fnDraw();
+                    $.growl({
+                        title: "Exito!",
+                        // colocando el mensaje centrado arriba ... manias ...
+                        location: "tc",
+                        size: "large",
+                        style: "warning",
+                        message: "El marcador ha sido editado con exito"
+                    });
+                    $('#modal-editar').modal('hide');
+                },
+                complete: {
+                    //si queremos hacer algo al terminar la petición ajax
+
+                }
+            });
+        }
+    });
+
+    /* Limpiamos los formularios de crear y editar */
+    $('#modal-crear').on('hidden.bs.modal', function() {
+        validatorCrear.resetForm();
+    })
+    $('#modal-editar').on('hidden.bs.modal', function() {
+        validatorEditar.resetForm();
+    });
+    /* mas limpio con el código anterior ...
+    $("#botonCancelarEditarmarcador").click(function() {
+        validatorEditar.resetForm();
+    });
+    $("#botonCancelarCrearmarcador").click(function() {
+        validatorCrear.resetForm();
+    });
+    $(".close").click(function() {
+        validatorEditar.resetForm();
+        validatorCrear.resetForm();
+    });
+    */
     // cargando la tabla con dataTable
     var miTabla = $('#miTabla').DataTable({
         'processing': true,
@@ -238,6 +238,8 @@ $(document).ready(function() {
         }, {
             'data': 'conceptoMarcador'
         }, {
+            'data': 'urlMarcador'
+        }, {
             'data': 'idMarcador',
             /*añadimos las clases editarbtn y borrarbtn para procesar los eventos click de los botones. No lo hacemos mediante id ya que habrá más de un
             botón de edición o borrado*/
@@ -252,17 +254,22 @@ $(document).ready(function() {
                 return '<a href="#modal-borrar" class="btn btn-warning borrarbtn" data-toggle="modal"  data-backdrop="static" >Borrar</a>';
                 // return '<button id=' + data + ' class="btn btn-warning borrarbtn " >Borrar</button>';
             }
+        }],
+        "columnDefs": [{
+            "targets": [2],
+            "visible": false,
+            "searchable": false
         }]
     });
     // Apply the search
-    miTabla.columns().every( function () {
+    miTabla.columns().every(function() {
         var that = this;
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $('input', this.footer()).on('keyup change', function() {
             that
-                .search( this.value )
+                .search(this.value)
                 .draw();
-        } );
-    } );
+        });
+    });
 
     // --------CREAR marcador ------
     // Lo que pasa al usar el botón crear marcador.
@@ -292,42 +299,11 @@ $(document).ready(function() {
          console.log("en editar marcador " + marcador);*/
         var nRow = $(this).parents('tr')[0];
         var aData = miTabla.row(nRow).data();
-        $('#idmarcadorEditar').val(aData.idmarcador);
-        $('#nombreEditar').val(aData.nombremarcador);
-        $('#numeroColegiadoEditar').val(aData.numeroColegiado);
-        // $('#clinicasEditar').val(aData.nombreClinica);
-        // pero no funciona con el campo select !!!!
-        // $('#selecClinicas').val(aData.nombreClinica);
-        // cargamos las clinicas por ajax (como todo en este ejercicio ;) usando el metodo post al llamarlo con un objeto ...
-        $('#seleccionaClinicasEditar').load("php/mto_marcador.php", ({
-            idmarcador: aData.idmarcador,
-            accion: 'cargarClinicasmarcador' // la acción que ejecuta el php
-        }));
-        /*******
-        // cargo un array con las clinicas del marcador a editar de la fila
-        console.log (aData.nombremarcador);
-        var clinicas = (aData.nombreClinica).split(',');
-        console.log(clinicas);
-        // pongo los valores de las clinicas cargadas a no seleccionadas aunque ya estan así !!!!
-        $("#modal-editar").find("option").each(function() {
-            $(this).prop('selected', false);
-        });
-        // vuelvo a recorrer las opciones de la select
-        $('#modal-editar').find('option').each(function() {
-            var actual = $(this);
-            // recorro las clinicas del marcador
-            clinicas.forEach(function(element) {
-              //  console.log(clinicas.);
-                // si coincide la de la select con la del marcador
-                if (actual.text() == element) {
-                    // la pongo como selecionada
-                    actual.prop('selected', true);
-                }
-            });
-        });
+        $('#idMarcadorEditar').val(aData.idMarcador);
+        $('#urlMarcadorEditar').val(aData.urlMarcador);
+        $('#conceptoMarcadorEditar').val(aData.conceptoMarcador);
 
-        /*********/
-        console.log('en el boton-editar-marcador ' + aData.idmarcador + ' ' + aData.nombremarcador);
+        console.log('en el boton-editar-marcador ' + aData.idMarcador + ' ' + aData.hrefMarcador);
 
     });
     // --------EDITAR marcador - GUARDAR  ------
