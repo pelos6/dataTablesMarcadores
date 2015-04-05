@@ -1,12 +1,4 @@
 <?php
-/*$gaSql['user'] = "usuario";
-$gaSql['password'] = "password";
-$gaSql['db'] = "database";
-$gaSql['server'] = "localhost";*/
-      /*  $gaSql['user'] = "usuario";
-        $gaSql['password'] = "password";
-        $gaSql['db'] = "database";
-        $gaSql['server'] = "localhost";*/
          // para desarrollo en casa 
         $gaSql['user'] = "root";
         $gaSql['password'] = "javier";

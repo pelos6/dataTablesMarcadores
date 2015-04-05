@@ -40,7 +40,7 @@ switch ($accion) {
          */
         // DB table to use
 //        $table = 'vdoctoresclinicas';
-         $table = 'vMarcadores';      
+         $table = 'vMarcadoresImportados';      
         // Table's primary key
         $primaryKey = 'idMarcador';       
         // Array of database columns which should be read and sent back to DataTables.
@@ -55,6 +55,10 @@ switch ($accion) {
             array(
                 'db' => 'hrefMarcador',
                 'dt' => 'hrefMarcador'
+            ),
+            array(
+                'db' => 'conceptoMarcador',
+                'dt' => 'conceptoMarcador'
             )
         );        
         // SQL server connection information

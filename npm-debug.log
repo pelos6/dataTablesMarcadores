@@ -1,0 +1,92 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'jquery-datatables' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 warn package.json datatablesmarcadores@ No description
+6 warn package.json datatablesmarcadores@ No repository field.
+7 warn package.json datatablesmarcadores@ No README data
+8 verbose readDependencies using package.json deps
+9 verbose cache add [ 'jquery-datatables', null ]
+10 verbose cache add name=undefined spec="jquery-datatables" args=["jquery-datatables",null]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: 'jquery-datatables',
+11 verbose parsed url   path: 'jquery-datatables',
+11 verbose parsed url   href: 'jquery-datatables' }
+12 silly lockFile 7863a0dc-jquery-datatables jquery-datatables
+13 verbose lock jquery-datatables C:\Users\Javier\AppData\Roaming\npm-cache\7863a0dc-jquery-datatables.lock
+14 silly lockFile 7863a0dc-jquery-datatables jquery-datatables
+15 silly lockFile 7863a0dc-jquery-datatables jquery-datatables
+16 verbose addNamed [ 'jquery-datatables', '' ]
+17 verbose addNamed [ null, '*' ]
+18 silly lockFile 2b78aa93-jquery-datatables jquery-datatables@
+19 verbose lock jquery-datatables@ C:\Users\Javier\AppData\Roaming\npm-cache\2b78aa93-jquery-datatables.lock
+20 silly addNameRange { name: 'jquery-datatables', range: '*', hasData: false }
+21 verbose request where is /jquery-datatables
+22 verbose request registry https://registry.npmjs.org/
+23 verbose request id 8fe93c058c85a63e
+24 verbose url raw /jquery-datatables
+25 verbose url resolving [ 'https://registry.npmjs.org/', './jquery-datatables' ]
+26 verbose url resolved https://registry.npmjs.org/jquery-datatables
+27 verbose request where is https://registry.npmjs.org/jquery-datatables
+28 info trying registry request attempt 1 at 09:42:39
+29 http GET https://registry.npmjs.org/jquery-datatables
+30 http 404 https://registry.npmjs.org/jquery-datatables
+31 verbose headers { date: 'Sun, 05 Apr 2015 07:42:47 GMT',
+31 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+31 verbose headers   'content-type': 'application/json',
+31 verbose headers   'cache-control': 'max-age=0',
+31 verbose headers   'content-length': '51',
+31 verbose headers   'accept-ranges': 'bytes',
+31 verbose headers   via: '1.1 varnish',
+31 verbose headers   age: '0',
+31 verbose headers   'x-served-by': 'cache-fra1225-FRA',
+31 verbose headers   'x-cache': 'MISS',
+31 verbose headers   'x-cache-hits': '0',
+31 verbose headers   'x-timer': 'S1428219767.700889,VS0,VE182',
+31 verbose headers   'keep-alive': 'timeout=10, max=50',
+31 verbose headers   connection: 'Keep-Alive' }
+32 silly registry.get cb [ 404,
+32 silly registry.get   { date: 'Sun, 05 Apr 2015 07:42:47 GMT',
+32 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+32 silly registry.get     'content-type': 'application/json',
+32 silly registry.get     'cache-control': 'max-age=0',
+32 silly registry.get     'content-length': '51',
+32 silly registry.get     'accept-ranges': 'bytes',
+32 silly registry.get     via: '1.1 varnish',
+32 silly registry.get     age: '0',
+32 silly registry.get     'x-served-by': 'cache-fra1225-FRA',
+32 silly registry.get     'x-cache': 'MISS',
+32 silly registry.get     'x-cache-hits': '0',
+32 silly registry.get     'x-timer': 'S1428219767.700889,VS0,VE182',
+32 silly registry.get     'keep-alive': 'timeout=10, max=50',
+32 silly registry.get     connection: 'Keep-Alive' } ]
+33 silly lockFile 2b78aa93-jquery-datatables jquery-datatables@
+34 silly lockFile 2b78aa93-jquery-datatables jquery-datatables@
+35 error 404 404 Not Found: jquery-datatables
+35 error 404
+35 error 404 'jquery-datatables' is not in the npm registry.
+35 error 404 You should bug the author to publish it
+35 error 404 It was specified as a dependency of 'datatablesmarcadores'
+35 error 404
+35 error 404 Note that you can also install from a
+35 error 404 tarball, folder, or http url, or git url.
+36 error System Windows_NT 6.2.9200
+37 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "--save" "jquery-datatables"
+38 error cwd c:\Users\Javier\Dropbox\CicloFormativoGradoSuperior\practicas_propias\dataTablesMarcadores
+39 error node -v v0.10.35
+40 error npm -v 1.4.28
+41 error code E404
+42 verbose exit [ 1, true ]

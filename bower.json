@@ -2,6 +2,9 @@
   "name": "datatablesmarcadores",
   "private": true,
   "dependencies": {
-    "bootstrap": "~3.2.0"
+    "bootstrap": "~3.2.0",
+    "jquery-validate": "~1.13.1",
+    "datatables": "~1.10.6",
+    "growl": "~1.2.5"
   }
 }

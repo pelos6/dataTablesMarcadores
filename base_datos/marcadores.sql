@@ -31,9 +31,9 @@ USE  marcadores;
 --
 
 CREATE TABLE IF NOT EXISTS `marcadores` (
-  `id_marcador` int(10) NOT NULL AUTO_INCREMENT,
-   `url` varchar(400) NOT NULL,
-  `concepto` varchar(400) NOT NULL,
+  `idMarcador` int(10) NOT NULL AUTO_INCREMENT,
+   `urlMarcador` varchar(400) NOT NULL,
+  `conceptoMarcador` varchar(400) NOT NULL,
   PRIMARY KEY (`id_marcador`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `marcadores` (
 -- Volcado de datos para la tabla `marcadores`
 --
 
-INSERT INTO `marcadores` (`url`,`concepto`) VALUES
+INSERT INTO `marcadores` (`urlMarcador`,`conceptoMarcador`) VALUES
 ('http://frontendlabs.io/985--paquetes-de-sublime-text-para-acelerar-tu-trabajo', 'front end laboratios'),
 ('http://zaragozaciudad.net/azlinux/', 'Zaragoza Linux');
 
