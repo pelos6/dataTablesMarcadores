@@ -1,17 +1,19 @@
 console.log('\'Allo \'Allo! marcadores!!!');
 'use strict';
 
+$(document).ready(function() {
+// la validación de la url mas localhost y file
 jQuery.validator.addMethod("urlLocalhost", function(value, element) {
     console.log("en el metodo " + value);
     if (value.indexOf('localhost') != -1) {
         return true;
-    } else {
+    } else if (value.indexOf('file') != -1) {
+        return true;
+    }else {
         // contributed by Scott Gonzalez: http://projects.scottsplayground.com/iri/
         return this.optional(element) || /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
     }
 }, "Debes introducir una url o al menos algo que lo parezca o localhost");
-
-$(document).ready(function() {
     // Las validaciones del formulario crearMarcador
     var validatorCrear = $('#crearMarcador').validate({
         rules: {
@@ -308,8 +310,8 @@ $(document).ready(function() {
     });
     // --------EDITAR marcador - GUARDAR  ------
     // lo que pasa al usar el boton Guardar del formulario editar
-    $("#botonGuardarEditarmarcador").click(function(mievento) {
-        console.log("en el boton botonConfirmarEditarmarcador");
+    $("#botonGuardarEditarMarcador").click(function(mievento) {
+        console.log("en el boton botonGuardarEditarMarcador "+ validatorCrear);
     });
     /*    $('#tabla tbody').on('click', 'tr', function() {
             console.log(miTabla.row(this).data());

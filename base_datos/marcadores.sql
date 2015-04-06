@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `marcadoresImportados` (
   `idMarcador` int(10) NOT NULL AUTO_INCREMENT,
    `urlMarcador` varchar(400) NOT NULL,
   `conceptoMarcador` varchar(400) NOT NULL,
-  PRIMARY KEY (`id_marcador`)
+  PRIMARY KEY (`idMarcador`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -45,6 +45,9 @@ INSERT INTO `marcadoresImportados` (`urlMarcador`,`conceptoMarcador`) VALUES
 ('http://zaragozaciudad.net/azlinux/', 'Zaragoza Linux');
 
 
+
+create view vmarcadoresimportados as 
+SELECT idMarcador, concat('<a href="',urlMarcador,'" target="_blank" >',urlMarcador,'</a>') hrefMarcador , urlMarcador , conceptoMarcador from marcadoresImportados ;
 
 --
 -- Estructura de tabla para la tabla `usuarios`
