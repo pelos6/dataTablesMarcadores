@@ -2,6 +2,7 @@
 
 Aprovechando la practica del CFGS -DAWEC.
 Una aplicación para gestionar e importar los marcadores de Chrome usando datatables, mysql, ajax y php ...
+Es una primera versión sin control de acceso.
 
 1. Carga de marcadores
    - Exportación en html de los marcadores de Chrome.
